@@ -9,6 +9,7 @@ namespace ToDo_List
 {
     class ToDoList
     {
+        string _fileListName = "lists.txt";
         private void ShowMenu()
         {
             Console.WriteLine("---------Generador de TO-DO LISTs---------");
@@ -17,6 +18,25 @@ namespace ToDo_List
             Console.WriteLine("3. Eliminar TO-DO List");
             Console.WriteLine("0. Salir");
             Console.Write("Escoja una opcion:");
+        }
+
+        private void EditNamesListFile(string fileName)
+        {
+            if (File.Exists(_fileListName))
+            {
+                if (!File.ReadAllText(_fileListName).Contains(fileName))
+                {
+                    StreamWriter editNamesListFile = File.AppendText(_fileListName);
+                    editNamesListFile.WriteLine(fileName);
+                    editNamesListFile.Close();
+                }
+            }
+            else
+            {
+                StreamWriter createNamesListFile = new StreamWriter(_fileListName);
+                createNamesListFile.WriteLine(fileName);
+                createNamesListFile.Close();
+            }
         }
         private void CreateToDoList()
         {
@@ -42,18 +62,16 @@ namespace ToDo_List
                 newFile.WriteLine("- " + task);
             }
             newFile.Close();
-            StreamWriter namesListFile = File.Exists("lists.txt") ? File.AppendText("lists.txt") : new StreamWriter("lists.txt");
-            namesListFile.WriteLine(fileName);
-            namesListFile.Close();
+            EditNamesListFile(fileName);
             Console.WriteLine("...Lista creada!!");
         }
 
         private string ChooseFile()
         {
             string fileName = null;
-            if (File.Exists("lists.txt"))
+            if (File.Exists(_fileListName))
             {
-                string[] linesOfTetxt = File.ReadAllLines("lists.txt");
+                string[] linesOfTetxt = File.ReadAllLines(_fileListName);
                 for (int i = 0; i < linesOfTetxt.Length; i++)
                 {
                     Console.WriteLine(i + 1 + ". " + linesOfTetxt[i]);
@@ -127,7 +145,7 @@ namespace ToDo_List
             if (fileName != null)
             {
                 File.Delete(fileName + ".txt");
-                File.WriteAllLines("lists.txt", File.ReadLines("lists.txt").Where(line => line != fileName).ToList());
+                File.WriteAllLines(_fileListName, File.ReadLines(_fileListName).Where(line => line != fileName).ToList());
                 Console.WriteLine("Lista Eliminada");
             }
 
