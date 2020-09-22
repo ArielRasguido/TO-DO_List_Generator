@@ -10,6 +10,7 @@ namespace ToDo_List
     class ToDoList
     {
         string _fileListName = "lists.txt";
+        string _fileExtension = ".txt";
         private void ShowMenu()
         {
             Console.WriteLine("---------Generador de TO-DO LISTs---------");
@@ -49,7 +50,7 @@ namespace ToDo_List
             fileName = Console.ReadLine();
             Console.Write("Añadir una breve descripcion:");
             description = Console.ReadLine();
-            TextWriter newFile = new StreamWriter(fileName + ".txt");
+            TextWriter newFile = new StreamWriter(fileName + _fileExtension);
             newFile.WriteLine("--------" + fileName + "--------");
             newFile.WriteLine("Descripcion: " + description);
             Console.Write("¿Cuantas tareas desea tener en la lista?:");
@@ -102,7 +103,7 @@ namespace ToDo_List
             fileName = ChooseFile();
             if (fileName != null)
             {
-                StreamReader file = new StreamReader(fileName + ".txt");
+                StreamReader file = new StreamReader(fileName + _fileExtension);
                 Console.WriteLine(file.ReadToEnd());
                 file.Close();
                 Console.Write("¿Desea añadir tareas a la lista? (si/no):");
@@ -124,7 +125,7 @@ namespace ToDo_List
 
         private void EditFile(string fileName)
         {
-            StreamWriter file = File.AppendText(fileName + ".txt");
+            StreamWriter file = File.AppendText(fileName + _fileExtension);
             Console.Write("¿Cuantas tareas desea añadir en la lista?:");
             int numberOfTasks = Convert.ToInt16(Console.ReadLine());
             Console.WriteLine("Añada las tareas a la lista:");
